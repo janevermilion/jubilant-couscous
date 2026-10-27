@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Книжный клуб · Цирк чтения</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Rye&family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --parchment:#f3e6c8;
+            --parchment-dark:#e8d5a8;
+            --ink:#2a1a0e;
+            --red:#a41d1d;
+            --red-dark:#7a1414;
+            --gold:#c9971f;
+            --gold-light:#e3bd5a;
+        }
+
+        *{box-sizing:border-box;margin:0;padding:0;}
+
+        body{
+            font-family:'Special Elite', 'Courier New', monospace;
+            background:
+                    radial-gradient(circle at 20% 10%, rgba(0,0,0,.06) 0%, transparent 40%),
+                    radial-gradient(circle at 80% 90%, rgba(0,0,0,.06) 0%, transparent 40%),
+                    repeating-linear-gradient(0deg, rgba(120,80,30,.04) 0px, rgba(120,80,30,.04) 1px, transparent 1px, transparent 4px),
+                    var(--parchment);
+            color:var(--ink);
+            line-height:1.5;
+            padding-bottom:60px;
+        }
+
+        /* ====== ВЕРХНИЙ БАННЕР ====== */
+        .banner{
+            background:
+                    repeating-linear-gradient(45deg, var(--red-dark) 0px, var(--red-dark) 12px, var(--red) 12px, var(--red) 24px);
+            border-bottom:6px double var(--gold);
+            padding:14px 16px;
+            text-align:center;
+            position:sticky;
+            top:0;
+            z-index:100;
+            box-shadow:0 6px 18px rgba(0,0,0,.45);
+        }
+        .banner-inner{
+            max-width:1100px;
+            margin:0 auto;
+            background:rgba(42,20,8,.55);
+            border:2px solid var(--gold-light);
+            border-radius:4px;
+            padding:10px 14px;
+            color:var(--parchment);
+        }
+        .banner-inner h2{
+            font-family:'Rye', serif;
+            font-size:clamp(.85rem, 2.2vw, 1.25rem);
+            letter-spacing:2px;
+            color:var(--gold-light);
+            text-transform:uppercase;
+            margin-bottom:4px;
+            text-shadow:1px 1px 0 #000;
+        }
+        .banner-inner p{
+            font-family:'Playfair Display', serif;
+            font-weight:700;
+            font-size:clamp(1rem, 2.6vw, 1.5rem);
+            line-height:1.3;
+            color:#fff8e7;
+        }
+        .banner-inner .banner-book{
+            font-style:italic;
+            color:var(--gold-light);
+        }
+
+        /* ====== ШАПКА-АФИША ====== */
+        header{
+            text-align:center;
+            padding:48px 20px 30px;
+            position:relative;
+        }
+        .ornament{
+            color:var(--red);
+            letter-spacing:8px;
+            font-size:1.3rem;
+            margin-bottom:14px;
+        }
+        header h1{
+            font-family:'Rye', serif;
+            font-size:clamp(2.2rem, 7vw, 4.5rem);
+            line-height:.95;
+            color:var(--red);
+            text-transform:uppercase;
+            letter-spacing:2px;
+            text-shadow:
+                    3px 3px 0 var(--gold),
+                    6px 6px 0 rgba(42,26,14,.25);
+        }
+        header .subtitle{
+            font-family:'Playfair Display', serif;
+            font-style:italic;
+            font-size:clamp(.95rem, 2.4vw, 1.3rem);
+            margin-top:18px;
+            color:var(--ink);
+            letter-spacing:1px;
+        }
+        .rule{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:14px;
+            max-width:760px;
+            margin:24px auto 0;
+            color:var(--red);
+        }
+        .rule::before,.rule::after{
+            content:"";
+            flex:1;
+            height:2px;
+            background:linear-gradient(90deg, transparent, var(--red), transparent);
+        }
+        .rule span{font-size:1.4rem;}
+
+        /* ====== ИТОГОВАЯ СТАТИСТИКА ====== */
+        .summary{
+            max-width:960px;
+            margin:0 auto 10px;
+            padding:0 18px;
+            text-align:center;
+            font-family:'Playfair Display', serif;
+            font-style:italic;
+            font-size:1rem;
+            color:var(--red-dark);
+        }
+        .summary strong{color:var(--red);}
+
+        /* ====== СПИСОК ВСТРЕЧ ====== */
+        main{
+            max-width:960px;
+            margin:0 auto;
+            padding:10px 18px;
+        }
+
+        .meeting{
+            position:relative;
+            background:
+                    repeating-linear-gradient(0deg, rgba(120,80,30,.05) 0px, rgba(120,80,30,.05) 1px, transparent 1px, transparent 3px),
+                    linear-gradient(180deg, var(--parchment-dark), var(--parchment));
+            border:3px double var(--ink);
+            border-radius:3px;
+            padding:26px 22px 22px;
+            margin:36px 0;
+            box-shadow:0 10px 24px rgba(42,26,14,.22), inset 0 0 0 6px rgba(164,29,29,.12);
+        }
+
+        .meeting::before,.meeting::after{
+            content:"✦";
+            position:absolute;
+            top:6px;
+            color:var(--red);
+            font-size:1rem;
+            opacity:.85;
+        }
+        .meeting::before{left:10px;}
+        .meeting::after{right:10px;}
+
+        .meeting-date{
+            display:inline-block;
+            font-family:'Playfair Display', serif;
+            font-weight:900;
+            font-size:1.05rem;
+            letter-spacing:1.5px;
+            text-transform:uppercase;
+            color:var(--parchment);
+            background:var(--red);
+            border:2px solid var(--gold);
+            padding:5px 16px;
+            border-radius:2px;
+            box-shadow:2px 2px 0 rgba(0,0,0,.35);
+            margin-bottom:12px;
+        }
+
+        .meeting-book{
+            font-family:'Rye', serif;
+            font-size:clamp(1.35rem, 4vw, 2rem);
+            line-height:1.15;
+            color:var(--ink);
+            text-transform:uppercase;
+            letter-spacing:.5px;
+            border-bottom:2px dashed rgba(164,29,29,.4);
+            padding-bottom:10px;
+            margin-bottom:14px;
+        }
+        .meeting-book em{
+            font-family:'Playfair Display', serif;
+            font-style:italic;
+            text-transform:none;
+            color:var(--red-dark);
+            font-weight:700;
+        }
+
+        .meta-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:14px 24px;
+            margin-bottom:16px;
+        }
+        @media (max-width:560px){
+            .meta-grid{grid-template-columns:1fr;}
+        }
+
+        .meta-block h3{
+            font-family:'Special Elite', monospace;
+            font-size:.78rem;
+            letter-spacing:2.5px;
+            text-transform:uppercase;
+            color:var(--red);
+            margin-bottom:4px;
+            border-bottom:1px solid rgba(164,29,29,.35);
+            padding-bottom:2px;
+        }
+        .meta-block p{
+            font-size:.95rem;
+            line-height:1.45;
+        }
+
+        .rating{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            font-family:'Rye', serif;
+            font-size:1.5rem;
+            color:var(--red);
+            border:3px double var(--red);
+            padding:4px 14px;
+            border-radius:50px;
+            transform:rotate(-2deg);
+            background:rgba(255,248,231,.6);
+        }
+        .rating .stars{
+            font-size:.95rem;
+            letter-spacing:1px;
+            color:var(--gold);
+            -webkit-text-stroke:.5px var(--ink);
+        }
+
+        .notes{
+            font-family:'Special Elite', monospace;
+            font-size:.92rem;
+            line-height:1.6;
+            background:rgba(255,248,231,.55);
+            border-left:4px solid var(--gold);
+            padding:12px 16px;
+            margin-top:4px;
+            color:#3a2515;
+        }
+        .notes::before{
+            content:"✎ Заметки: ";
+            font-family:'Playfair Display', serif;
+            font-weight:700;
+            font-style:italic;
+            color:var(--red-dark);
+        }
+
+        /* состояние загрузки / ошибки */
+        .status{
+            text-align:center;
+            font-family:'Playfair Display', serif;
+            font-style:italic;
+            font-size:1.1rem;
+            color:var(--red-dark);
+            padding:40px 20px;
+        }
+        .status.error{
+            color:var(--red);
+            border:2px dashed var(--red);
+            border-radius:4px;
+            max-width:600px;
+            margin:30px auto;
+        }
+
+        /* футер */
+        footer{
+            text-align:center;
+            margin-top:50px;
+            padding:24px 18px;
+            font-size:.8rem;
+            letter-spacing:1.5px;
+            text-transform:uppercase;
+            color:var(--red-dark);
+            border-top:2px dashed rgba(164,29,29,.4);
+            max-width:960px;
+            margin-left:auto;
+            margin-right:auto;
+        }
+        footer span{font-size:1.1rem;display:block;margin-bottom:6px;color:var(--red);}
+    </style>
+</head>
+<body>
+
+<!-- ===== БАННЕР О СЛЕДУЮЩЕЙ ВСТРЕЧЕ ===== -->
+<div class="banner">
+    <div class="banner-inner">
+        <h2>✦ Следующее представление ✦</h2>
+        <p id="banner-text">Загрузка афиши…</p>
+    </div>
+</div>
+
+<!-- ===== ШАПКА ===== -->
+<header>
+    <div class="ornament">★ ✦ ★ ✦ ★</div>
+    <h1>Книжный<br>Клуб<br>алкашей</h1>
+    <p class="subtitle">— Всемирно известная труппа читателей —<br>Афиша встреч и оценок</p>
+    <div class="rule"><span>❧</span></div>
+</header>
+
+<!-- ===== ИТОГИ ===== -->
+<div class="summary" id="summary"></div>
+
+<!-- ===== СПИСОК ВСТРЕЧ ===== -->
+<main id="meetings-list">
+    <p class="status">Загрузка встреч…</p>
+</main>
+
+<footer>
+    <span>✦ ✦ ✦</span>
+    Книжный клуб · Афиша обновляется после каждой встречи · 2026
+</footer>
+
+<script>
+    (function () {
+        "use strict";
+
+        /* ---------- утилиты ---------- */
+
+        // "12 октября 2026" -> Date (для сортировки)
+        const MONTHS = {
+            "января": 0, "февраля": 1, "марта": 2, "апреля": 3,
+            "мая": 4, "июня": 5, "июля": 6, "августа": 7,
+            "сентября": 8, "октября": 9, "ноября": 10, "декабря": 11
+        };
+
+        function parseRuDate(str) {
+            if (!str) return new Date(0);
+            const m = String(str).trim().match(/^(\d{1,2})\s+([а-яё]+)\s+(\d{4})$/i);
+            if (!m) return new Date(0);
+            const day = parseInt(m[1], 10);
+            const month = MONTHS[m[2].toLowerCase()];
+            const year = parseInt(m[3], 10);
+            if (month === undefined) return new Date(0);
+            return new Date(year, month, day);
+        }
+
+        // 10-балльная оценка -> 5 звёзд
+        function stars(rating) {
+            const full = Math.max(0, Math.min(5, Math.round(Number(rating) / 2)));
+            return "★".repeat(full) + "☆".repeat(5 - full);
+        }
+
+        function escapeHtml(s) {
+            return String(s == null ? "" : s)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
+        const listEl = document.getElementById("meetings-list");
+        const bannerEl = document.getElementById("banner-text");
+        const summaryEl = document.getElementById("summary");
+
+        /* ---------- загрузка данных ---------- */
+
+        fetch("meetings.json", { cache: "no-store" })
+            .then(function (res) {
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                return res.json();
+            })
+            .then(render)
+            .catch(function (err) {
+                bannerEl.textContent = "Афиша временно недоступна";
+                listEl.innerHTML =
+                    '<p class="status error">Не удалось загрузить <code>meetings.json</code>.<br>' +
+                    escapeHtml(err.message) +
+                    '<br><br>Проверьте, что файл лежит рядом с index.html и страница открыта через сервер (GitHub Pages), а не через file://</p>';
+            });
+
+        /* ---------- рендер ---------- */
+
+        function render(data) {
+            const meetings = Array.isArray(data.meetings) ? data.meetings.slice() : [];
+
+            // сортировка: новые сверху
+            meetings.sort(function (a, b) {
+                return parseRuDate(b.date) - parseRuDate(a.date);
+            });
+
+            renderBanner(data.next);
+            renderSummary(meetings);
+            renderMeetings(meetings);
+        }
+
+        function renderBanner(next) {
+            if (!next) {
+                bannerEl.textContent = "Следующая встреча скоро будет объявлена";
+                return;
+            }
+            const parts = [];
+            if (next.date) parts.push(escapeHtml(next.date));
+            if (next.time) parts.push(escapeHtml(next.time));
+            if (next.place) parts.push(escapeHtml(next.place));
+
+            let html = parts.join(" · ");
+            if (next.book) {
+                html += ' · читаем <span class="banner-book">«' + escapeHtml(next.book) + '»</span>';
+            }
+            bannerEl.innerHTML = html;
+        }
+
+        function renderSummary(meetings) {
+            if (!meetings.length) {
+                summaryEl.textContent = "";
+                return;
+            }
+            const rated = meetings.filter(function (m) {
+                return typeof m.rating === "number" && !isNaN(m.rating);
+            });
+            const avg = rated.length
+                ? (rated.reduce(function (s, m) { return s + m.rating; }, 0) / rated.length)
+                : null;
+
+            const total = meetings.length;
+            const totalWord = plural(total, ["встреча", "встречи", "встреч"]);
+
+            let html = "Всего проведено: <strong>" + total + " " + totalWord + "</strong>";
+            if (avg !== null) {
+                html += " · средняя оценка клуба: <strong>" + avg.toFixed(1) + " / 10</strong>";
+            }
+            summaryEl.innerHTML = html;
+        }
+
+        function plural(n, forms) {
+            const n10 = n % 10;
+            const n100 = n % 100;
+            if (n10 === 1 && n100 !== 11) return forms[0];
+            if (n10 >= 2 && n10 <= 4 && (n100 < 10 || n100 >= 20)) return forms[1];
+            return forms[2];
+        }
+
+        function renderMeetings(meetings) {
+            if (!meetings.length) {
+                listEl.innerHTML = '<p class="status">Пока ни одной встречи — афиша пуста.</p>';
+                return;
+            }
+
+            listEl.innerHTML = meetings.map(function (m) {
+                const participants = Array.isArray(m.participants)
+                    ? m.participants.map(escapeHtml).join(", ")
+                    : escapeHtml(m.participants || "—");
+
+                const hasRating = typeof m.rating === "number" && !isNaN(m.rating);
+                const ratingHtml = hasRating
+                    ? '<span class="rating">' + m.rating.toFixed(1) +
+                    ' <span class="stars">' + stars(m.rating) + "</span></span>"
+                    : '<span class="rating">—</span>';
+
+                return (
+                    '<article class="meeting">' +
+                    '<div class="meeting-date">' + escapeHtml(m.date) + "</div>" +
+                    '<div class="meeting-book"><em>«' + escapeHtml(m.title) + "»</em>" +
+                    (m.author ? " — " + escapeHtml(m.author) : "") +
+                    "</div>" +
+                    '<div class="meta-grid">' +
+                    '<div class="meta-block">' +
+                    "<h3>Участники</h3>" +
+                    "<p>" + participants + "</p>" +
+                    "</div>" +
+                    '<div class="meta-block">' +
+                    "<h3>Средняя оценка</h3>" +
+                    "<p>" + ratingHtml + "</p>" +
+                    "</div>" +
+                    "</div>" +
+                    (m.notes ? '<div class="notes">' + escapeHtml(m.notes) + "</div>" : "") +
+                    "</article>"
+                );
+            }).join("");
+        }
+    })();
+</script>
+
+</body>
+</html>
